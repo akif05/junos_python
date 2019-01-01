@@ -1,0 +1,23 @@
+# anslible-playbook --version
+# Create palybook
+# Create inventory
+# different places for variables
+
+----
+# A list of fruits
+#fruits:
+#    - Apple
+#    - Orange
+#    - Mango
+
+# An employee dictionary record
+#martin:
+#    name: martin jv
+#    job: DevOps
+#    skill: Elite
+
+cat inventory
+
+
+
+

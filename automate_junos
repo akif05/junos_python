@@ -1,0 +1,136 @@
+jrpc
+netconfig
+
+openconfig yang model
+
+pip install ncclient
+pip install junos-eznc
+ansible-galaxy install Juniper.junos
+
+pip install junos-netconify # to speack directly to juniper dev over console
+
+
+# On juniper device
+set system services netconf ssh
+
+
+junos_get_facts
+jun0os_install_config
+junos_install_os
+junos_shutdown
+junos_zeroize. - reset junos device
+
+
+
+# Deply ntp to all junos servers
+set system ntp server 66.222.54.198
+
+if using set command config file needs to be *.set
+
+cat set-ntp.yml
+---
+- hosts: lab_juniper_ro
+  roles:
+  - Juniper.junos
+  connection: local
+  gather_facts: now
+
+  - name: Deploy Ansilbe User
+    junos_install_config
+      host={{inventory_hostname}}
+      user=aaron.paxson
+      file=resources/config-user.set
+      overwrite=false
+      logfile=logs/deploy-user.log
+
+
+
+ cat resources/config-user.set
+ set system ntp server 66.222.54.198
+
+
+ansible-playbook set-ntp.yml
+
+
+#################################################3
+# Juniper port mirroring
+github.com/jeremyschulman/NCE
+
+
+
+
+## Python Netmiko library
+
+cat commandTest.py
+#!/usr/bin/env python
+from __future__ import print_function, unicode_literals
+from netmiko import ConnectHandler
+
+lax_tar_r1 = {
+    'device_type':'juniper',
+    'ip':'127.0.0.1',
+    'port':'2200',
+    'username':'akif',
+    'password':'Akif999',
+    'verbose':True,
+}
+
+# Connect to device with given arguments in lax_tar_r1
+net_connect = ConnectHandler(**lax_tar_r1)
+
+net_connect.enable()
+config_commands = [
+    'set system host-name vsrx1',
+    'commit',
+]
+
+output = net_connect.send_config_set(config_commands)
+print(output)
+
+#################################################
+
+cat tor_inventory.py
+devices = [ 
+{'vsrx1':{
+    'device_type':'juniper',
+    'ip':'127.0.0.1',
+    'port':'1222',
+    'username':'akif',
+    'password':'Akif999',
+    'verbose':True,
+}},
+{'vsrx2':{
+    'device_type':'juniper',
+    'ip':'127.0.0.1',
+    'port':'2122',
+    'username':'akif',
+    'password':'Akif999',
+    'verbose':True,
+}},
+{'vsrx3':{
+    'device_type':'juniper',
+    'ip':'127.0.0.1',
+    'port':'3122',
+    'username':'akif',
+    'password':'Akif999',
+    'verbose':True,
+}},
+{'vsrx4':{
+    'device_type':'juniper',
+    'ip':'127.0.0.1',
+    'port':'4122',
+    'username':'akif',
+    'password':'Akif999',
+    'verbose':True,
+}},
+
+
+
+
+
+
+akif
+Akif999
+
+root 
+Vagrant999

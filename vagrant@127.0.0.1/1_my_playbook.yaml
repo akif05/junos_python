@@ -1,0 +1,9 @@
+---
+- name: "Gather Facts"
+  hosts: vsrx1
+
+  tasks:
+    - name: Gather facts for IOS Devices
+      junos_facts:
+      gather_subset: config
+      

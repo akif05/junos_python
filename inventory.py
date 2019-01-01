@@ -1,0 +1,34 @@
+devices = [ 
+{'vsrx1':{
+    'device_type':'juniper',
+    'ip':'127.0.0.1',
+    'port':'22221',
+    'username':'akif',
+    'password':'Akif999',
+    'verbose':True,
+}},
+{'vsrx2':{
+    'device_type':'juniper',
+    'ip':'127.0.0.1',
+    'port':'22222',
+    'username':'akif',
+    'password':'Akif999',
+    'verbose':True,
+}},
+{'vsrx3':{
+    'device_type':'juniper',
+    'ip':'127.0.0.1',
+    'port':'22223',
+    'username':'akif',
+    'password':'Akif999',
+    'verbose':True,
+}},
+{'vsrx4':{
+    'device_type':'juniper',
+    'ip':'127.0.0.1',
+    'port':'22224',
+    'username':'akif',
+    'password':'Akif999',
+    'verbose':True,
+}},
+]
