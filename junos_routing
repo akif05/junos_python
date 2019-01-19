@@ -1,0 +1,133 @@
+
+
+rsvp
+
+
+int ge-0/0/0.0 family mpls
+
+configure
+set int ge-0/0/1.0 family mpls
+set int ge-0/0/2.0 family mpls
+set int ge-0/0/3.0 family mpls
+
+edit protocols mpls
+set int ge-0/0/1.0 
+set int ge-0/0/2.0 
+set int ge-0/0/3.0 
+
+top edit protocols ldp
+set int ge-0/0/1.0 
+set int ge-0/0/2.0 
+set int ge-0/0/3.0 
+
+show | compare
+
+commit and-quit
+show ldp neighbor
+
+show ldp session
+
+show ldp database session 10.210.0.4
+
+show route protocol ldp table inet
+
+show route 192.168.1.0/24
+show route 192.168.1.0/24 extend
+
+tarceroute 10.210.0.7
+
+tresaroute 192.168.1.1
+
+
+###########################
+set int ge-0/0/0.0 family inet address 10.1.1.1/24 primary
+set int ge-0/0/0.0 family inet address 10.1.1.1/24 preferred
+
+debug ip icmp
+ping 10.1.46.6
+
+show conf int ge-0/0/0.46 | display set
+set int ge-0/0/0.46 family inet address 10.1.46.4/24 primary
+set int ge-0/0/0.46 family inet address 10.1.46.4/24 prefered
+set int ge-0/0/0.46 family inet address 10.1.46.3/24
+set int ge-0/0/0.46 family inet6 address 2001:10:1:46::4/64
+
+configure
+edit int ge-0/0/0 unit 46 family inet address 10.1.464/24
+delete primary
+delete prefered
+commit
+
+run ping 10.1.46.4
+
+top
+edit protocols ospf
+set area 0 int ge-0/0/0.46
+commit
+
+run show ospf int ge-0/0/0.46 detail
+#
+
+# show ip int brief
+top show int ge-0/0/0.46 family inet
+
+top edit int ge-0/0/0.46 family inet
+edit address 10.1.46.4/24
+set primary
+set prefered
+commit and-quit
+
+# junos static route is conf under routing-options
+set routing-options static route 0.0.0.0/0 next-hop 1.11.1.1
+
+
+edit routing-options
+set static route 6.6.6.6/32 nexxt-hop 10.1.46.6
+commit and-quit
+
+show route
+set routing-options rib inet6.0 static route ::/0 next-hop 2001::1
+
+show route table inet6.0
+
+run show route tabel inet.0
+
+set config routing-options | display set
+
+# Reject the packets and send icmp unreachable
+top edit routing-options
+set static route 10.1.1.1/32 reject
+
+# Will silentely drop traffic
+top edit routing-options
+set static route 10.1.1.1/32 discard
+
+
+inet.0 is gobal ip routing table
+
+inet6.0 ipv6 routing table
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,5 @@
 devices = [ 
-{'vsrx1':{
+{'CE-A1':{
     'device_type':'juniper',
     'ip':'127.0.0.1',
     'port':'22221',
@@ -7,7 +7,7 @@ devices = [
     'password':'Vagrant',
     'verbose':True,
 }},
-{'vsrx2':{
+{'CE-B1':{
     'device_type':'juniper',
     'ip':'127.0.0.1',
     'port':'22222',
@@ -15,7 +15,7 @@ devices = [
     'password':'Vagrant',
     'verbose':True,
 }},
-{'vsrx3':{
+{'PE1':{
     'device_type':'juniper',
     'ip':'127.0.0.1',
     'port':'22223',
@@ -23,7 +23,7 @@ devices = [
     'password':'Vagrant',
     'verbose':True,
 }},
-{'vsrx4':{
+{'P1':{
     'device_type':'juniper',
     'ip':'127.0.0.1',
     'port':'22224',
@@ -32,7 +32,7 @@ devices = [
     'verbose':True,
 }},
 
-{'vsrx5':{
+{'P2':{
     'device_type':'juniper',
     'ip':'127.0.0.1',
     'port':'22225',
@@ -41,7 +41,7 @@ devices = [
     'verbose':True,
 }},
 
-{'vsrx6':{
+{'PE2':{
     'device_type':'juniper',
     'ip':'127.0.0.1',
     'port':'22226',
@@ -50,7 +50,7 @@ devices = [
     'verbose':True,
 }},
 
-{'vsrx7':{
+{'CE-A2':{
     'device_type':'juniper',
     'ip':'127.0.0.1',
     'port':'22227',
@@ -60,7 +60,7 @@ devices = [
 }},
 
 
-{'vsrx8':{
+{'CE-B2':{
     'device_type':'juniper',
     'ip':'127.0.0.1',
     'port':'22228',
@@ -68,6 +68,4 @@ devices = [
     'password':'Vagrant',
     'verbose':True,
 }},
-
-
 ]

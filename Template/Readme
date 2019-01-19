@@ -1,0 +1,86 @@
+from jnpr.junos import Device
+import yaml
+from jinja2 import Template
+from ppirnt import pprint as pp
+from jnpr.junos.utils.config import Config
+
+myvars = yaml.load(open('datavars.yaml').read())
+# pp(myvars)
+##Or walk in for loop
+#for key, value in myvars.items():
+#    print(f'{key}: {value}')
+
+dev = Device('127.0.0.1', port=22221, user='akif', password='Akif999')
+dev.open()
+dev.facts['model']
+
+dev.bind(cfg=Config)
+
+dev.cfg.load(template_path='port_mirror.j2', template_vars=myvars)
+
+#dev.cfg
+#help(dev.cfg)
+#help(dev.cfg.load)
+#dev.cfg.load
+
+
+
+# Test jinja template
+import yaml
+from jinja2 import Template
+template = Template("""
+{%- macro filter_name(iface) -%}
+  {{ iface|replace("/","_") - "_iplist_filter" }}
+{%-endmacro -%}
+
+ethernet-switching-options {
+    analyzers multi-session {
+        input {
+            ingress {
+{%- for iface in host_ports %}
+    interface {{ iface }}.0;
+{%- endfor %}
+        }
+        egress {
+{%- for iface in host_ports %}
+            interface {{ iface }}.0;
+{%- endfor %}
+        }
+    }
+    output {
+        interface {{ mirror_cable.from }}.0;
+        }
+    }
+}
+
+
+interface {
+{%- for iface in host_ports %}
+    {{ iface }} {
+i       unit 0 {
+            family etherneti-swtiching {
+                port-mode access;
+                vlan {
+                    members {{ host_ports_vlan.name }};
+                }
+            }
+        }
+    }
+{%- endfor %}
+    {{ mirror_cable.from }} {
+        unit 0 {
+            family ethernet-switching;
+        }
+    }
+    
+    {{ mirror_cable.to }} {
+        unit 0 {
+            family ethernet-switching;
+                vlan {
+                    members {{ mirror_vlan.name }};
+                }
+        }
+    }
+}
+""")
+

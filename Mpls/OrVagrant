@@ -1,0 +1,136 @@
+#
+# Juniper lab v0.1
+#
+# ge-0/0/0.0: management interface
+# ge-0/0/1.0 - ge-0/0/7.0: user interfaces
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "juniper/vqfx10k-re"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 512 
+    vb.cpus = 2
+    vb.gui = false
+  end
+
+  config.vm.define "cea1" do |cea1|
+    cea1.vm.host_name = "cea1"
+    cea1.vm.network "private_network",
+                    ip: "192.168.15.5",
+                    virtualbox__intnet: "1-15"
+    config.ssh.insert_key = false
+    config.vm.network "forwarded_port", guest: 22, host: 22221, id: "ssh"
+  end
+
+  config.vm.define "ceb1" do |ceb1|
+    ceb1.vm.host_name = "ceb1"
+    ceb1.vm.network "private_network",
+                     ip: "192.168.16.2",
+                     virtualbox__intnet: "1-16"
+    config.ssh.insert_key = false
+    config.vm.network "forwarded_port", guest: 22, host: 22222, id: "ssh"
+  end
+
+  config.vm.define "pe1" do |pe1|
+    pe1.vm.host_name = "pe1"
+    pe1.vm.network "private_network",
+                     ip: "192.168.15.1",
+                     virtualbox__intnet: "1-15"
+    pe1.vm.network "private_network",
+                     ip: "192.168.12.1",
+                     virtualbox__intnet: "1-12"
+    pe1.vm.network "private_network",
+                     ip: "192.168.14.1",
+                     virtualbox__intnet: "1-14"
+    pe1.vm.network "private_network",
+                     ip: "192.168.16.1",
+                     virtualbox__intnet: "1-16"
+
+    config.vm.network "forwarded_port", guest: 22, host: 22223, id: "ssh"
+    config.ssh.insert_key = false
+    config.vm.provider "virtualbox" do |vb|
+        vb.memory = 1024 
+        vb.cpus = 2
+        vb.gui = false
+    end
+
+  end
+
+  config.vm.define "p1" do |p1|
+    p1.vm.host_name = "p1"
+    config.vm.network "forwarded_port", guest: 22, host: 22224, id: "ssh"
+    p1.vm.network "private_network",
+                     ip: "192.168.12.2",
+                     virtualbox__intnet: "1-12"
+    p1.vm.network "private_network",
+                     ip: "192.168.23.2",
+                     virtualbox__intnet: "1-23"
+    p1.vm.network "private_network",
+                     ip: "192.168.24.2",
+                     virtualbox__intnet: "1-24"
+    config.ssh.insert_key = false
+  end
+
+  config.vm.define "p2" do |p2|
+    p2.vm.host_name = "p2"
+    p2.vm.network "private_network",
+                     ip: "192.168.34.4",
+                     virtualbox__intnet: "1-34"
+    p2.vm.network "private_network",
+                     ip: "192.168.14.4",
+                     virtualbox__intnet: "1-14"
+    p2.vm.network "private_network",
+                     ip: "192.168.24.4",
+                     virtualbox__intnet: "1-24"
+    config.ssh.insert_key = false
+    config.vm.network "forwarded_port", guest: 22, host: 22225, id: "ssh"
+    config.vm.provider "virtualbox" do |vb|
+        vb.memory = 1024 
+        vb.cpus = 2
+        vb.gui = false
+    end
+  end
+
+  config.vm.define "pe2" do |pe2|
+    pe2.vm.host_name = "pe2"
+    pe2.vm.network "private_network",
+                     ip: "192.168.34.3",
+                     virtualbox__intnet: "1-34"
+    pe2.vm.network "private_network",
+                     ip: "192.168.23.3",
+                     virtualbox__intnet: "1-2333"
+    pe2.vm.network "private_network",
+                     ip: "192.168.37.3",
+                     virtualbox__intnet: "1-37"
+    pe2.vm.network "private_network",
+                     ip: "192.168.38.1",
+                     virtualbox__intnet: "1-38"
+    config.vm.memory = 1024
+    config.ssh.insert_key = false
+    config.vm.network "forwarded_port", guest: 22, host: 22226, id: "ssh"
+  end
+
+  config.vm.define "cea2" do |cea2|
+    cea2.vm.host_name = "cea2"
+    cea2.vm.network "private_network",
+                     ip: "192.168.37.6",
+                     virtualbox__intnet: "1-37"
+    config.ssh.insert_key = false
+    config.vm.network "forwarded_port", guest: 22, host: 22227, id: "ssh"
+  end
+
+  config.vm.define "ceb2" do |ceb2|
+    ceb2.vm.host_name = "ceb2"
+    ceb2.vm.network "private_network",
+                     ip: "192.168.38.6",
+                     virtualbox__intnet: "1-38"
+    config.ssh.insert_key = false
+    config.vm.network "forwarded_port", guest: 22, host: 22228, id: "ssh"
+  end
+
+end
+
+# config.ssh.private_key_path = ["~/.ssh/id_rsa", "~/.vagrant.d/insecure_private_key"]
+# config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
+# config.ssh.username = "vagrant"
+# config.ssh.password = "vagrant"

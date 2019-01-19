@@ -1,0 +1,53 @@
+{% macro filter_name(iface) %}
+  {{ iface|replace("/","_") - "_iplist_filter" }}
+{% endmacro %}
+
+ethernet-switching-options {
+    analyzer multi-session {
+        input {
+            ingress {
+{% for iface in host_ports %}
+    interface {{ iface }}.0;
+{% endfor %}
+        }
+        egress {
+{% for iface in host_ports %}
+            interface {{ iface }}.0;
+{% endfor %}
+        }
+    }
+    output {
+        interface {{ mirror_cable.from }}.0;
+        }
+    }
+}
+
+
+interface {
+{% for iface in host_ports %}
+    {{ iface }} {
+i       unit 0 {
+            family ethernet-swtiching {
+                port-mode access;
+                vlan {
+                    members {{ host_ports_vlan.name }};
+                }    
+            }
+        }
+    }
+{% endfor %}
+    {{ mirror_cable.from }} {
+        unit 0 {
+            family ethernet-switching;
+        }
+    }
+    
+    {{ mirror_cable.to }} {
+        unit 0 {
+            family ethernet-switching;
+                vlan {
+                    members {{ mirror_vlan.name }};
+                }
+        }
+    }
+}

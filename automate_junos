@@ -126,11 +126,58 @@ devices = [
 
 
 
+- name: load configure file into device
+  junos_config:
+    src: srx.cfg
+    comment: update config
+    provider: "{{ netconf }}"
+
+ 
+ansible-vault encrypt host_vars/vsxr1 host_vars/vsxr2
+# create password
+
+ansible-vault edit host_vars/vsxr1
+# provide password
+
+ansible-playbook --ask-vault-pass ansible_playbook.yaml
+# provide password
+
+# if want to have the files again unencrited
+ansible-vault decrypt host_vars/vsxr1 host_vars/vsxr2
+# Provide password and the files are decripted agian
+
+## We can encrit only the password in the file
+ansible-vault encrypt_string
+# Create password
+# then put the password tha will be encrypted and used to send to remote
+# Folow the example bellow
+
+root@cache-server:/home/vagrant/Ansible# ansible-vault encrypt_string
+New Vault password: 
+Confirm New Vault password: 
+Reading plaintext input from stdin. (ctrl-d to end input)    # Type the password and Ctl+d (no Enter!!!!)
+Akif999!vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          30356162613532666365393366393630666536393831373739353333643166613664613934303261
+          3566333863353735383131353339343036663732613637610a353530336134646361303335633437
+          37386134646635386133306130303533376534393431356463363466323430633831636565336336
+          3032306266393834630a313238356530333232343662636636363038393339343432393333626638
+          3637
+Encryption successful
+root@cache-server:/home/vagrant/Ansible# 
+
+Copy the part starting form !valt... and put the encripted password in vars file
+
+ansible_ssh_pass: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          30356162613532666365393366393630666536393831373739353333643166613664613934303261
+          3566333863353735383131353339343036663732613637610a353530336134646361303335633437
+          37386134646635386133306130303533376534393431356463363466323430633831636565336336
+          3032306266393834630a313238356530333232343662636636363038393339343432393333626638
+          3637
+
+## To run the playbook use --ask-vault-pass  
+ansible-playbook --ask-vault-pass my-playbook.yaml
 
 
-
-akif
-Akif999
-
-root 
-Vagrant999
+github.com/PacktPublishing/Mastering-Python-Networking
